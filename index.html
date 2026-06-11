@@ -213,6 +213,14 @@
             font-size: 0.75rem;
             color: #2c5a2e;
             margin-bottom: 10px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .stock.low {
+            color: #b87c00;
+        }
+        .stock.out {
+            color: #b1432c;
         }
         .btn-beli {
             background: #2c5a2e;
@@ -521,7 +529,7 @@
             harga: 1250000,
             deskripsi: "Motif tumpal khas Sragen dengan warna sogan alam, batik tulis halus berkualitas tinggi. Cocok untuk acara formal.",
             gambar: "batik tumpal.jpg",
-            stok: "50",
+            stok: 50,
             diskon: false
         },
         {
@@ -530,7 +538,7 @@
             harga: 450000,
             deskripsi: "Motif sidomukti membawa keberkahan, kain primisima dengan pewarnaan alami, batik tulis eksklusif.",
             gambar: "batik sidomukti jati.jpg",
-            stok: "70",
+            stok: 70,
             diskon: false
         },
         {
@@ -539,7 +547,7 @@
             harga: 1399000,
             deskripsi: "Motif truntum melambangkan kasih sayang, desain elegan dengan gradasi biru keemasan, batik cap tulis.",
             gambar: "batik truntum.jpg",
-            stok: "100",
+            stok: 100,
             diskon: false
         },
         {
@@ -548,7 +556,7 @@
             harga: 275000,
             deskripsi: "Batik cap khas Sragen dengan motif flora & fauna, ekonomis namun tetap elegan untuk sehari-hari.",
             gambar: "batik cap kebun sragen.jpg",
-            stok: "68",
+            stok: 68,
             diskon: false
         },
         {
@@ -557,7 +565,7 @@
             harga: 595000,
             deskripsi: "Motif kawung klasik dengan sentuhan emas, batik tulis tangan dari pengrajin Sragen, limited edition.",
             gambar: "kawung sragen premium.jpg",
-            stok: "97",
+            stok: 97,
             diskon: true,
             hargaAsli: 750000
         },
@@ -567,7 +575,7 @@
             harga: 510000,
             deskripsi: "Motif parang rusak yang gagah, kombinasi warna earth tone, batik tulis dengan kualitas terbaik.",
             gambar: "parang rusak barong.jpg",
-            stok: "125",
+            stok: 125,
             diskon: false
         },
         {
@@ -576,7 +584,7 @@
             harga: 350000,
             deskripsi: "Fusi motif mega mendung dengan sentuhan khas Sragen, warna pastel kekinian.",
             gambar: "batik modern mega mendung.jpg",
-            stok: "266",
+            stok: 266,
             diskon: false
         },
         {
@@ -584,8 +592,8 @@
             nama: "Lurik Sragen Kombinasi",
             harga: 225000,
             deskripsi: "Tenun lurik khas Sragen dipadukan motif batik, casual & nyaman untuk sehari-hari.",
-            gambar: "lurik kombinasi.jpg",
-            stok: "30",
+            gambar: "lurik Kombinasi.jpg",
+            stok: 30,
             diskon: false
         }
     ];
@@ -652,6 +660,10 @@
     }
 
     function addToCart(product) {
+        if (product.stok <= 0) {
+            showNotif(`⛔ Stok ${product.nama} habis!`, true);
+            return;
+        }
         const existing = cart.find(item => item.id === product.id);
         if (existing) {
             existing.quantity += 1;
@@ -665,35 +677,81 @@
             });
             showNotif(`✨ ${product.nama} ditambahkan ke keranjang`);
         }
+        product.stok -= 1;
+        updateStockUI(product);
         updateCartUI();
         saveCartToLocal();
+        saveStokToLocal();
     }
 
     function removeFromCart(id) {
         const idx = cart.findIndex(item => item.id === id);
         if (idx !== -1) {
             const removed = cart[idx];
+            const product = produkData.find(p => p.id === id);
             if (removed.quantity > 1) {
                 removed.quantity -= 1;
                 showNotif(`⛔ ${removed.nama} quantity berkurang (sisa ${removed.quantity})`);
+                if (product) { product.stok += 1; updateStockUI(product); }
             } else {
+                const restoreQty = removed.quantity;
                 cart.splice(idx, 1);
                 showNotif(`🗑️ ${removed.nama} dihapus dari keranjang`);
+                if (product) { product.stok += restoreQty; updateStockUI(product); }
             }
             updateCartUI();
             saveCartToLocal();
+            saveStokToLocal();
         }
     }
 
     function clearCart() {
         if(cart.length > 0){
+            cart.forEach(item => {
+                const product = produkData.find(p => p.id === item.id);
+                if (product) { product.stok += item.quantity; updateStockUI(product); }
+            });
             cart = [];
             updateCartUI();
             saveCartToLocal();
+            saveStokToLocal();
             showNotif('Keranjang dikosongkan');
         } else {
             showNotif('Keranjang sudah kosong', false);
         }
+    }
+
+    function saveStokToLocal() {
+        const stokMap = {};
+        produkData.forEach(p => { stokMap[p.id] = p.stok; });
+        localStorage.setItem('batikSragenStok', JSON.stringify(stokMap));
+    }
+
+    function loadStokFromLocal() {
+        const stored = localStorage.getItem('batikSragenStok');
+        if (stored) {
+            try {
+                const stokMap = JSON.parse(stored);
+                produkData.forEach(p => {
+                    if (stokMap[p.id] !== undefined) p.stok = stokMap[p.id];
+                });
+            } catch(e) {}
+        }
+    }
+
+    function updateStockUI(product) {
+        const stockEls = document.querySelectorAll(`.stock[data-id="${product.id}"]`);
+        const btnEls = document.querySelectorAll(`.btn-beli[data-id="${product.id}"]`);
+        stockEls.forEach(el => {
+            el.className = 'stock' + (product.stok === 0 ? ' out' : product.stok <= 5 ? ' low' : '');
+            el.textContent = product.stok === 0 ? '❌ Stok Habis' : (product.stok <= 5 ? `⚠️ Sisa stok: ${product.stok}` : `📦 Stok: ${product.stok}`);
+        });
+        btnEls.forEach(btn => {
+            btn.disabled = product.stok === 0;
+            btn.textContent = product.stok === 0 ? '🚫 Stok Habis' : '🛒 + Keranjang';
+            btn.style.opacity = product.stok === 0 ? '0.5' : '1';
+            btn.style.cursor = product.stok === 0 ? 'not-allowed' : 'pointer';
+        });
     }
 
     function saveCartToLocal() {
@@ -730,8 +788,10 @@
                         ${originalPriceHtml}
                     </div>
                     <div class="desc">${prod.deskripsi}</div>
-                    <div class="stock">📦 Stok: ${prod.stok}</div>
-                    <button class="btn-beli" data-id="${prod.id}">🛒 + Keranjang</button>
+                    <div class="stock ${prod.stok === 0 ? 'out' : prod.stok <= 5 ? 'low' : ''}" data-id="${prod.id}">${prod.stok === 0 ? '❌ Stok Habis' : (prod.stok <= 5 ? `⚠️ Sisa stok: ${prod.stok}` : `📦 Stok: ${prod.stok}`)}</div>
+                    <button class="btn-beli" data-id="${prod.id}" ${prod.stok === 0 ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                        ${prod.stok === 0 ? '🚫 Stok Habis' : '🛒 + Keranjang'}
+                    </button>
                 </div>
             `;
             produkContainer.appendChild(card);
@@ -800,7 +860,10 @@
         window.open(waLink, '_blank');
 
         if(confirm("Pesanan telah dikirim via WhatsApp. Apakah Anda ingin mengosongkan keranjang setelah pesanan?")) {
-            clearCart();
+            // Stok TIDAK dikembalikan setelah checkout (pesanan dikonfirmasi)
+            cart = [];
+            updateCartUI();
+            saveCartToLocal();
         }
         showNotif('Pesanan diteruskan ke Admin BatikSragen, cek WhatsApp Anda');
     }
@@ -816,6 +879,7 @@
     checkoutBtn.addEventListener('click', performCheckout);
     orderForm.addEventListener('submit', submitOrder);
 
+    loadStokFromLocal();
     renderProducts();
     loadCartFromLocal();
     updateCartUI();
