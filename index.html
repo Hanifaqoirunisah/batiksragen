@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BatikSragen | Pusat Jual Beli Batik Khas Sragen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+        }
+
+        body {
+            background: #fef7e8;
+            color: #2c1a12;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0e2ce;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b87c4f;
+            border-radius: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3e2a21 0%, #5a3a2a 100%);
+            color: #fff3e6;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo h1 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .logo p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #fff3e6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+        }
+        .nav-links a:hover {
+            border-bottom-color: #e2b68b;
+            color: #ffdfb8;
+        }
+        .cart-icon {
+            background: #7e5a41;
+            padding: 6px 14px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .cart-icon:hover {
+            background: #9b704f;
+            transform: scale(1.02);
+        }
+
+        .hero {
+            background-image: url("bccc.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+        }
+        .hero-content h2 {
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 650px;
+            margin: 1rem auto;
+            background: rgba(0,0,0,0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+        }
+        .btn-cta {
+            background: #c37e4b;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        .btn-cta:hover {
+            background: #a56133;
+            transform: scale(1.02);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: #4b2e1f;
+            position: relative;
+        }
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #c98254;
+            margin: 10px auto;
+            border-radius: 4px;
+        }
+        .produk-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1rem 2rem 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.12);
+        }
+        .card-img {
+            height: 260px;
+            background-size: cover;
+            background-position: center;
+            background-color: #eddcc9;
+            position: relative;
+        }
+        .badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #c98254;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .card-info {
+            padding: 1.2rem;
+        }
+        .card-info h3 {
+            font-size: 1.4rem;
+            color: #3e2a21;
+        }
+        .price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #b45a32;
+            margin: 8px 0;
+        }
+        .original-price {
+            font-size: 0.85rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+        .desc {
+            color: #5a4a3a;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .stock {
+            font-size: 0.75rem;
+            color: #2c5a2e;
+            margin-bottom: 10px;
+        }
+        .btn-beli {
+            background: #2c5a2e;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-beli:hover {
+            background: #1e4020;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background: #fffaf2;
+            box-shadow: -8px 0 30px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        .cart-panel.active {
+            right: 0;
+        }
+        .cart-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e7d6c2;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .cart-header h2 {
+            color: #4b2e1f;
+        }
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #7e5a41;
+        }
+        .cart-items {
+            flex: 1;
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            background: #f7eee4;
+            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 20px;
+            align-items: center;
+        }
+        .cart-item-info h4 {
+            font-size: 1rem;
+        }
+        .cart-item-price {
+            font-weight: bold;
+            color: #b45a32;
+        }
+        .remove-item {
+            background: #e0c8b4;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .cart-total {
+            border-top: 2px dashed #d6bea2;
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .cart-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.8rem;
+            flex-direction: column;
+        }
+        .btn-checkout {
+            background: #c98254;
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+        .empty-cart {
+            text-align: center;
+            color: #a28d76;
+            padding: 2rem;
+        }
+
+        .order-section {
+            background: #f5ede3;
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 32px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #4b2e1f;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 28px;
+            border: 1px solid #e2cfbb;
+            background: #fefbf7;
+            font-size: 1rem;
+        }
+        .form-group textarea {
+            border-radius: 24px;
+            resize: vertical;
+        }
+        .btn-submit {
+            background: #5a3a2a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+        .btn-submit:hover {
+            background: #3e2a21;
+        }
+        footer {
+            background: #2c1a12;
+            color: #e7cfbb;
+            text-align: center;
+            padding: 1.8rem;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+        }
+        .notification {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #2c5a2e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            z-index: 1100;
+            opacity: 0;
+            transition: 0.2s;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+        @media (max-width: 700px) {
+            .nav-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-content h2 {
+                font-size: 1.8rem;
+            }
+            .produk-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="notification" id="notifToast">✨ Produk ditambahkan ke keranjang</div>
+
+<header>
+    <div class="nav-container">
+        <div class="logo">
+            <h1>BatikSragen</h1>
+            <p>🏵️ Batik Tulis & Cap Asli Sragen</p>
+        </div>
+        <div class="nav-links">
+            <a href="#">Beranda</a>
+            <a href="#produk">Koleksi</a>
+            <a href="#order">Pesan Batik</a>
+            <div class="cart-icon" id="cartIcon">
+                🛒 Keranjang (<span id="cartCount">0</span>)
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h2>ꦧꦠꦶꦏ꧀ ꦱꦿꦒꦺꦤ꧀</h2>
+        <p>Warisan budaya dari Bumi Sukowati. Batik khas Sragen dengan motif tumpal, truntum, dan sidomukti. Beli langsung dari pengrajin terpercaya.</p>
+        <button class="btn-cta" id="exploreBtn">✨ Lihat Koleksi Batik</button>
+    </div>
+</section>
+
+<section id="produk">
+    <h2 class="section-title">🎋 Koleksi Unggulan Sragen</h2>
+    <div class="produk-container" id="produkList"></div>
+</section>
+
+<section class="order-section" id="order">
+    <div class="form-container">
+        <h2 style="text-align: center; margin-bottom: 1.5rem; color:#4b2e1f;">📋 Form Pemesanan Batik Sragen</h2>
+        <form id="orderForm">
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="customerName" placeholder="Contoh: Slamet Riyadi" required>
+            </div>
+            <div class="form-group">
+                <label>Nomor WhatsApp / Telepon</label>
+                <input type="tel" id="customerPhone" placeholder="0812xxxx" required>
+            </div>
+            <div class="form-group">
+                <label>Alamat Pengiriman (Sragen & sekitarnya)</label>
+                <textarea rows="2" id="customerAddress" placeholder="Jl. Sukowati No..., Sragen" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Catatan Batik / pesanan khusus (opsional)</label>
+                <textarea rows="2" id="orderNote" placeholder="Misal: motif tumpal ukuran 2 meter"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">📩 Kirim Pesanan & Checkout</button>
+        </form>
+        <p style="font-size: 0.7rem; text-align: center; margin-top: 1rem;">⚠️ Keranjang akan dikirim sebagai daftar pesanan ke admin</p>
+    </div>
+</section>
+
+<footer>
+    <p>🏵️ Batik Sragen | Pusat jual beli batik tulis & cap khas Sragen - Mendukung pengrajin lokal Sragen, Jawa Tengah. 🧵</p>
+    <p style="margin-top: 8px;">📍 Showroom: Pasar Batik Sragen, Jl. Raya Sukowati No.45 | Jam 08.00 - 17.00</p>
+    <p>© 2026 BatikSragen - Melestarikan Budaya Nusantara</p>
+</footer>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+        <h2>🛍️ Keranjang Batik</h2>
+        <button class="close-cart" id="closeCartBtn">&times;</button>
+    </div>
+    <ul class="cart-items" id="cartItemsList">
+        <li class="empty-cart">Keranjang masih kosong. Yuk pilih batik favoritmu!</li>
+    </ul>
+    <div class="cart-total">
+        <span>Total Belanja:</span>
+        <span id="cartTotalPrice">Rp0</span>
+    </div>
+    <div class="cart-actions">
+        <button class="btn-checkout" id="checkoutBtn">🛒 Checkout Sekarang</button>
+        <button class="btn-checkout" style="background:#b1947a;" id="clearCartBtn">🗑️ Kosongkan Keranjang</button>
+    </div>
+</div>
+
+<script>
+    // PRODUK BATIK SRAGEN LENGKAP DENGAN FOTO ASLI DAN HARGA REALISTIK
+    const produkData = [
+        {
+            id: 1,
+            nama: "Batik Tumpal Sukowati",
+            harga: 1250000,
+            deskripsi: "Motif tumpal khas Sragen dengan warna sogan alam, batik tulis halus berkualitas tinggi. Cocok untuk acara formal.",
+            gambar: "batik tumpal.jpg",
+            stok: "50",
+            diskon: false
+        },
+        {
+            id: 2,
+            nama: "Batik Sidomukti Jati",
+            harga: 450000,
+            deskripsi: "Motif sidomukti membawa keberkahan, kain primisima dengan pewarnaan alami, batik tulis eksklusif.",
+            gambar: "batik sidomukti jati.jpg",
+            stok: "70",
+            diskon: false
+        },
+        {
+            id: 3,
+            nama: "Truntum Sragen Asli",
+            harga: 1399000,
+            deskripsi: "Motif truntum melambangkan kasih sayang, desain elegan dengan gradasi biru keemasan, batik cap tulis.",
+            gambar: "batik truntum.jpg",
+            stok: "100",
+            diskon: false
+        },
+        {
+            id: 4,
+            nama: "Batik Cap Kebun Sragen",
+            harga: 275000,
+            deskripsi: "Batik cap khas Sragen dengan motif flora & fauna, ekonomis namun tetap elegan untuk sehari-hari.",
+            gambar: "batik cap kebun sragen.jpg",
+            stok: "68",
+            diskon: false
+        },
+        {
+            id: 5,
+            nama: "Kawung Sragen Premium",
+            harga: 595000,
+            deskripsi: "Motif kawung klasik dengan sentuhan emas, batik tulis tangan dari pengrajin Sragen, limited edition.",
+            gambar: "kawung sragen premium.jpg",
+            stok: "97",
+            diskon: true,
+            hargaAsli: 750000
+        },
+        {
+            id: 6,
+            nama: "Parang Rusak Barong",
+            harga: 510000,
+            deskripsi: "Motif parang rusak yang gagah, kombinasi warna earth tone, batik tulis dengan kualitas terbaik.",
+            gambar: "parang rusak barong.jpg",
+            stok: "125",
+            diskon: false
+        },
+        {
+            id: 7,
+            nama: "Batik Modern Mega Mendung",
+            harga: 350000,
+            deskripsi: "Fusi motif mega mendung dengan sentuhan khas Sragen, warna pastel kekinian.",
+            gambar: "batik modern mega mendung.jpg",
+            stok: "266",
+            diskon: false
+        },
+        {
+            id: 8,
+            nama: "Lurik Sragen Kombinasi",
+            harga: 225000,
+            deskripsi: "Tenun lurik khas Sragen dipadukan motif batik, casual & nyaman untuk sehari-hari.",
+            gambar: "lurik Kombinasi.jpg",
+            stok: "30",
+            diskon: false
+        }
+    ];
+
+    let cart = [];
+
+    const produkContainer = document.getElementById('produkList');
+    const cartCountSpan = document.getElementById('cartCount');
+    const cartItemsList = document.getElementById('cartItemsList');
+    const cartTotalSpan = document.getElementById('cartTotalPrice');
+    const cartIcon = document.getElementById('cartIcon');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartPanel = document.getElementById('cartPanel');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    const clearCartBtn = document.getElementById('clearCartBtn');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const orderForm = document.getElementById('orderForm');
+    const notifToast = document.getElementById('notifToast');
+
+    function showNotif(msg, isError = false) {
+        notifToast.textContent = msg;
+        notifToast.style.backgroundColor = isError ? '#b1432c' : '#2c5a2e';
+        notifToast.style.opacity = '1';
+        setTimeout(() => {
+            notifToast.style.opacity = '0';
+        }, 2000);
+    }
+
+    function updateCartUI() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountSpan.innerText = totalItems;
+
+        if (cart.length === 0) {
+            cartItemsList.innerHTML = '<li class="empty-cart">🛒 Keranjang masih kosong. Pilih batik Sragen favoritmu!</li>';
+            cartTotalSpan.innerText = 'Rp0';
+            return;
+        }
+
+        let itemsHtml = '';
+        let totalBelanja = 0;
+        cart.forEach((item) => {
+            const subtotal = item.harga * item.quantity;
+            totalBelanja += subtotal;
+            itemsHtml += `
+                <li class="cart-item">
+                    <div class="cart-item-info">
+                        <h4>${item.nama}</h4>
+                        <small>${item.quantity} x Rp${item.harga.toLocaleString('id-ID')}</small>
+                        <div>Sub: Rp${subtotal.toLocaleString('id-ID')}</div>
+                    </div>
+                    <button class="remove-item" data-id="${item.id}">Hapus</button>
+                </li>
+            `;
+        });
+        cartItemsList.innerHTML = itemsHtml;
+        cartTotalSpan.innerText = `Rp${totalBelanja.toLocaleString('id-ID')}`;
+
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.dataset.id);
+                removeFromCart(id);
+            });
+        });
+    }
+
+    function addToCart(product) {
+        const existing = cart.find(item => item.id === product.id);
+        if (existing) {
+            existing.quantity += 1;
+            showNotif(`✅ ${product.nama} +1 (total: ${existing.quantity})`);
+        } else {
+            cart.push({
+                id: product.id,
+                nama: product.nama,
+                harga: product.harga,
+                quantity: 1
+            });
+            showNotif(`✨ ${product.nama} ditambahkan ke keranjang`);
+        }
+        updateCartUI();
+        saveCartToLocal();
+    }
+
+    function removeFromCart(id) {
+        const idx = cart.findIndex(item => item.id === id);
+        if (idx !== -1) {
+            const removed = cart[idx];
+            if (removed.quantity > 1) {
+                removed.quantity -= 1;
+                showNotif(`⛔ ${removed.nama} quantity berkurang (sisa ${removed.quantity})`);
+            } else {
+                cart.splice(idx, 1);
+                showNotif(`🗑️ ${removed.nama} dihapus dari keranjang`);
+            }
+            updateCartUI();
+            saveCartToLocal();
+        }
+    }
+
+    function clearCart() {
+        if(cart.length > 0){
+            cart = [];
+            updateCartUI();
+            saveCartToLocal();
+            showNotif('Keranjang dikosongkan');
+        } else {
+            showNotif('Keranjang sudah kosong', false);
+        }
+    }
+
+    function saveCartToLocal() {
+        localStorage.setItem('batikSragenCart', JSON.stringify(cart));
+    }
+
+    function loadCartFromLocal() {
+        const stored = localStorage.getItem('batikSragenCart');
+        if (stored) {
+            try {
+                cart = JSON.parse(stored);
+                updateCartUI();
+            } catch(e) { cart = []; }
+        }
+    }
+
+    function renderProducts() {
+        produkContainer.innerHTML = '';
+        produkData.forEach(prod => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const displayPrice = prod.diskon ? prod.harga : prod.harga;
+            const originalPriceHtml = prod.diskon ? `<span class="original-price">Rp${prod.hargaAsli.toLocaleString('id-ID')}</span>` : '';
+            const badgeHtml = prod.stok === 'Best Seller' ? '<div class="badge">🔥 Best Seller</div>' : (prod.stok === 'Premium' ? '<div class="badge">⭐ Premium</div>' : '');
+            
+            card.innerHTML = `
+                <div class="card-img" style="background-image: url('${prod.gambar}'); background-size: cover; background-position: center;">
+                    ${badgeHtml}
+                </div>
+                <div class="card-info">
+                    <h3>${prod.nama}</h3>
+                    <div class="price">
+                        Rp${displayPrice.toLocaleString('id-ID')}
+                        ${originalPriceHtml}
+                    </div>
+                    <div class="desc">${prod.deskripsi}</div>
+                    <div class="stock">📦 Stok: ${prod.stok}</div>
+                    <button class="btn-beli" data-id="${prod.id}">🛒 + Keranjang</button>
+                </div>
+            `;
+            produkContainer.appendChild(card);
+        });
+
+        document.querySelectorAll('.btn-beli').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.dataset.id);
+                const product = produkData.find(p => p.id === id);
+                if(product) addToCart(product);
+            });
+        });
+    }
+
+    function openCart() {
+        cartPanel.classList.add('active');
+        cartOverlay.classList.add('active');
+        updateCartUI();
+    }
+
+    function closeCart() {
+        cartPanel.classList.remove('active');
+        cartOverlay.classList.remove('active');
+    }
+
+    function performCheckout() {
+        if (cart.length === 0) {
+            showNotif('Keranjang masih kosong, tambahkan batik dulu!', true);
+            openCart();
+            return;
+        }
+        document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+        showNotif('Silakan isi data pemesanan di bawah untuk mengirim pesanan');
+        closeCart();
+    }
+
+    function submitOrder(event) {
+        event.preventDefault();
+        const name = document.getElementById('customerName').value.trim();
+        const phone = document.getElementById('customerPhone').value.trim();
+        const address = document.getElementById('customerAddress').value.trim();
+        const note = document.getElementById('orderNote').value;
+
+        if (!name || !phone || !address) {
+            showNotif('Harap isi nama, nomor telepon, dan alamat terlebih dahulu!', true);
+            return;
+        }
+
+        if (cart.length === 0) {
+            showNotif('Keranjang belanja kosong, silakan pilih batik terlebih dahulu!', true);
+            openCart();
+            return;
+        }
+
+        let detailItems = '';
+        let totalAll = 0;
+        cart.forEach(item => {
+            const subtotal = item.harga * item.quantity;
+            totalAll += subtotal;
+            detailItems += `- ${item.nama} : ${item.quantity} pcs @ Rp${item.harga.toLocaleString('id-ID')} = Rp${subtotal.toLocaleString('id-ID')}\n`;
+        });
+        
+        const message = `*PESANAN BATIK SRAGEN*%0A%0A*Nama:* ${name}%0A*Telepon:* ${phone}%0A*Alamat:* ${address}%0A*Catatan:* ${note || '-'}%0A%0A*Detail Pesanan:*%0A${encodeURIComponent(detailItems)}%0A*Total:* Rp${totalAll.toLocaleString('id-ID')}%0A%0ATerima kasih telah berbelanja di BatikSragen. Mohon konfirmasi lebih lanjut.`;
+        const waNumber = '6285734567890';
+        const waLink = `https://wa.me/${waNumber}?text=${message.replace(/\n/g, '%0A')}`;
+        window.open(waLink, '_blank');
+
+        if(confirm("Pesanan telah dikirim via WhatsApp. Apakah Anda ingin mengosongkan keranjang setelah pesanan?")) {
+            clearCart();
+        }
+        showNotif('Pesanan diteruskan ke Admin BatikSragen, cek WhatsApp Anda');
+    }
+
+    document.getElementById('exploreBtn').addEventListener('click', () => {
+        document.getElementById('produk').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    cartIcon.addEventListener('click', openCart);
+    closeCartBtn.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+    clearCartBtn.addEventListener('click', clearCart);
+    checkoutBtn.addEventListener('click', performCheckout);
+    orderForm.addEventListener('submit', submitOrder);
+
+    renderProducts();
+    loadCartFromLocal();
+    updateCartUI();
+</script>
+</body>
+</html>
